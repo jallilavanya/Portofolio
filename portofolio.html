@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lavanya Jalli - Full Stack & AI/RAG Engineer</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Playfair Display / Bree Serif feel + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Canvas Confetti for Interactive Delight -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Bree Serif"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#2563eb',
+              600: '#1d4ed8',
+              700: '#1e40af',
+              900: '#1e3a8a',
+            },
+            accent: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              500: '#ec4899',
+              600: '#db2777',
+            },
+            slate: {
+              850: '#151e2e',
+            }
+          },
+          boxShadow: {
+            'soft': '0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
+            'card': '0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+            'glow': '0 0 15px rgba(37, 99, 235, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #fafbfd;
+      color: #1e293b;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .border-crisp {
+      border: 1px solid #e2e8f0;
+    }
+
+    .border-crisp-hover:hover {
+      border-color: #93c5fd;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Animation Utilities */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+
+    .badge-pulse {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+      animation: pulse-green 2s infinite;
+    }
+
+    @keyframes pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased flex flex-col md:flex-row text-slate-800">
+
+  <!-- ================= MOBILE HEADER ================= -->
+  <header class="md:hidden sticky top-0 z-40 glass-nav border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center font-serif font-bold text-lg shadow-sm">
+        LJ
+      </div>
+      <div>
+        <h1 class="font-serif font-bold text-base leading-tight">Lavanya Jalli</h1>
+        <p class="text-xs text-slate-500 font-medium">Full Stack & AI Engineer</p>
+      </div>
+    </div>
+    <button id="mobileMenuBtn" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Menu">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </header>
+
+  <!-- Mobile Overlay Nav -->
+  <div id="mobileNavModal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm md:hidden">
+    <div class="fixed right-0 top-0 bottom-0 w-3/4 max-w-xs bg-white shadow-2xl p-6 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-center mb-6">
+          <span class="font-serif font-bold text-lg text-brand-700">Navigation</span>
+          <button id="closeMobileNav" class="p-1 rounded-md text-slate-400 hover:text-slate-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <nav class="space-y-2" id="mobileNavLinks">
+          <!-- Populated by JS -->
+        </nav>
+      </div>
+      <div class="pt-6 border-t border-slate-100">
+        <p class="text-xs text-slate-400 text-center">Visakhapatnam, AP, India</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DESKTOP SIDEBAR NAVIGATION ================= -->
+  <aside class="hidden md:flex md:w-80 lg:w-80 flex-col fixed inset-y-0 left-0 bg-white border-r border-slate-200/80 z-30 shadow-sm">
+    <!-- Header/Profile -->
+    <div class="p-6 border-b border-slate-100">
+      <div class="relative w-20 h-20 mb-4 mx-auto">
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-brand-500 text-white flex items-center justify-center font-serif font-bold text-3xl shadow-md border-2 border-white">
+          LJ
+        </div>
+        <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full badge-pulse" title="Available for opportunities"></span>
+      </div>
+      <h1 class="text-center font-serif font-bold text-xl text-slate-900">Lavanya Jalli</h1>
+      <p class="text-center text-xs text-brand-600 font-semibold tracking-wide uppercase mt-1">Full Stack & AI Engineer</p>
+      
+      <div class="flex justify-center items-center gap-1 text-slate-500 text-xs mt-3">
+        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-500"></i>
+        <span>Visakhapatnam, India</span>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto" id="desktopNavLinks">
+      <!-- Generated dynamically -->
+    </nav>
+
+    <!-- Sidebar Footer / Quick Links -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+      <div class="flex items-center justify-around text-slate-500">
+        <a href="https://github.com" target="_blank" rel="noreferrer" class="p-2 rounded-lg hover:text-brand-600 hover:bg-white transition-all shadow-none hover:shadow-sm" title="GitHub">
+          <i data-lucide="github" class="w-5 h-5"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="p-2 rounded-lg hover:text-brand-600 hover:bg-white transition-all shadow-none hover:shadow-sm" title="LinkedIn">
+          <i data-lucide="linkedin" class="w-5 h-5"></i>
+        </a>
+        <a href="mailto:lavanyajalli.dev@gmail.com" class="p-2 rounded-lg hover:text-brand-600 hover:bg-white transition-all shadow-none hover:shadow-sm" title="Email Direct">
+          <i data-lucide="mail" class="w-5 h-5"></i>
+        </a>
+        <button onclick="downloadResume()" class="p-2 rounded-lg hover:text-brand-600 hover:bg-white transition-all shadow-none hover:shadow-sm" title="Download Resume">
+          <i data-lucide="file-down" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTENT AREA ================= -->
+  <main class="flex-1 md:ml-80 min-h-screen p-4 sm:p-6 lg:p-10 max-w-6xl">
+    
+    <!-- TOP STATS BAR / QUICK PROFILE BANNER -->
+    <section class="bg-white rounded-2xl p-6 mb-8 border border-slate-200/80 shadow-card relative overflow-hidden">
+      <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-50 rounded-full blur-3xl opacity-70 pointer-events-none"></div>
+      
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold mb-3">
+            <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
+            Specializing in Generative AI, RAG & Full-Stack Systems
+          </div>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-slate-900 leading-tight">
+            Building Intelligent, High-Performance Web & AI Solutions
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+            Computer Science graduate proficient in React, FastAPI, LangGraph, and Computer Vision. Experience building scalable real-time face recognition systems and agentic RAG architectures.
+          </p>
+        </div>
+        
+        <div class="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
+          <button onclick="setActiveTab('contact')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm rounded-xl shadow-md shadow-brand-500/20 transition-all flex items-center gap-2 cursor-pointer">
+            <i data-lucide="send" class="w-4 h-4"></i> Get in Touch
+          </button>
+          <button onclick="openRAGSimModal()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer">
+            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Try RAG Simulator
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-100 text-center sm:text-left">
+        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+          <p class="text-xs font-medium text-slate-500">Education</p>
+          <p class="text-sm font-bold text-slate-900 mt-0.5">B.Tech CSE (2022-26)</p>
+          <p class="text-[11px] text-brand-600 font-semibold mt-0.5">CGPA: 8.33 / 10</p>
+        </div>
+        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+          <p class="text-xs font-medium text-slate-500">Latest Internship</p>
+          <p class="text-sm font-bold text-slate-900 mt-0.5">DragonFlyTest</p>
+          <p class="text-[11px] text-slate-500 mt-0.5">Python Full Stack Intern</p>
+        </div>
+        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+          <p class="text-xs font-medium text-slate-500">Core Focus</p>
+          <p class="text-sm font-bold text-slate-900 mt-0.5">AI Agents & RAG</p>
+          <p class="text-[11px] text-slate-500 mt-0.5">LangGraph & Pinecone</p>
+        </div>
+        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+          <p class="text-xs font-medium text-slate-500">Rankings</p>
+          <p class="text-sm font-bold text-slate-900 mt-0.5">Rank 59</p>
+          <p class="text-[11px] text-emerald-600 font-semibold mt-0.5">NxtWave CodeVerse</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DYNAMIC SECTION CONTAINER -->
+    <div id="contentSections">
+      
+      <!-- ================= SECTION 1: SUMMARY / ABOUT ================= -->
+      <section id="section-summary" class="tab-content animate-fade-in space-y-6">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Professional Summary</h3>
+              <p class="text-xs text-slate-500">Engineering background & core technical philosophy</p>
+            </div>
+          </div>
+
+          <div class="prose max-w-none text-slate-600 leading-relaxed text-sm sm:text-base space-y-4">
+            <p>
+              I am a driven <strong>Full Stack & AI Software Engineer</strong> based in <strong>Visakhapatnam, Andhra Pradesh</strong>, with a track record of translating complex algorithmic concepts into practical, production-ready software solutions.
+            </p>
+            <p>
+              My expertise spans the entire development cycle—from engineering sleek React user interfaces and architecting high-performance FastAPI/Node.js microservices, to training computer vision models (OpenCV, ONNX Runtime) and designing multi-agent <strong>Retrieval-Augmented Generation (RAG)</strong> systems utilizing LangGraph and Pinecone.
+            </p>
+            <p>
+              During my recent internship at <strong>DragonFlyTest (Hyderabad)</strong>, I led the build of a real-time face recognition and attendance monitoring engine, optimizing neural inferences to maintain low latency across multi-camera streams. I excel in high-energy environments, hackathons, and dynamic engineering teams where clean code, swift prototyping, and robust system design are prioritized.
+            </p>
+          </div>
+
+          <!-- Highlight Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all">
+              <i data-lucide="brain-circuit" class="w-8 h-8 text-brand-600 mb-2"></i>
+              <h4 class="font-bold text-slate-900 text-sm">Agentic Workflows</h4>
+              <p class="text-xs text-slate-500 mt-1">Designing graph-based stateful AI agents with custom tools using LangGraph.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all">
+              <i data-lucide="video" class="w-8 h-8 text-indigo-600 mb-2"></i>
+              <h4 class="font-bold text-slate-900 text-sm">Computer Vision</h4>
+              <p class="text-xs text-slate-500 mt-1">Multi-camera live streaming, ONNX optimization, and facial recognition.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all">
+              <i data-lucide="layers" class="w-8 h-8 text-emerald-600 mb-2"></i>
+              <h4 class="font-bold text-slate-900 text-sm">Full Stack Architecture</h4>
+              <p class="text-xs text-slate-500 mt-1">React, FastAPI, Node.js, and relational database integrations with optimized SQL queries.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 2: EXPERIENCE ================= -->
+      <section id="section-experience" class="tab-content hidden animate-fade-in space-y-6">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+              <i data-lucide="briefcase" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Work Experience</h3>
+              <p class="text-xs text-slate-500">Hands-on industry roles and technical contributions</p>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="relative border-l-2 border-slate-200 ml-3 sm:ml-6 space-y-10 pl-6 sm:pl-8">
+            
+            <!-- Experience Item 1 -->
+            <div class="relative group">
+              <!-- Timeline Dot -->
+              <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-5 h-5 rounded-full bg-white border-4 border-brand-600 group-hover:scale-110 transition-transform"></span>
+              
+              <div class="bg-slate-50/80 rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <div>
+                    <h4 class="font-serif font-bold text-lg text-slate-900">Python Full Stack Developer Intern</h4>
+                    <p class="text-brand-600 font-semibold text-sm">DragonFlyTest <span class="text-slate-400 font-normal">| Hyderabad, AP</span></p>
+                  </div>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-100 text-brand-700 w-max">
+                    March 2026 – June 2026
+                  </span>
+                </div>
+
+                <ul class="space-y-2 text-slate-600 text-xs sm:text-sm mb-4">
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Engineered a enterprise-grade <strong>Real-Time Face Recognition & Attendance Monitoring Platform</strong> leveraging Python, FastAPI, OpenCV, and MySQL.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Optimized <strong>ONNX Runtime model inferences</strong> to process high-throughput multi-camera video streams with minimal frame drops.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Architected interactive frontend dashboards with React.js for live status monitoring, stream toggling, and automated log reporting.</span>
+                  </li>
+                </ul>
+
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">Python</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">FastAPI</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">OpenCV</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">ONNX Runtime</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">React.js</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">MySQL</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience Item 2 -->
+            <div class="relative group">
+              <!-- Timeline Dot -->
+              <span class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-5 h-5 rounded-full bg-white border-4 border-slate-400 group-hover:border-brand-600 transition-colors"></span>
+              
+              <div class="bg-slate-50/80 rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <div>
+                    <h4 class="font-serif font-bold text-lg text-slate-900">Full Stack Developer Intern</h4>
+                    <p class="text-brand-600 font-semibold text-sm">AICTE Virtual Internship</p>
+                  </div>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-200 text-slate-700 w-max">
+                    May 2025 – October 2025
+                  </span>
+                </div>
+
+                <ul class="space-y-2 text-slate-600 text-xs sm:text-sm mb-4">
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Developed end-to-end responsive web application modules utilizing React.js, Node.js, and Express.js.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Integrated robust relational SQL databases, writing optimized queries and API endpoints for data operations.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                    <span>Followed modern UI design patterns with standard accessibility and state management practices.</span>
+                  </li>
+                </ul>
+
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">React.js</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">Node.js</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">Express.js</span>
+                  <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-md text-[11px] font-medium text-slate-700">SQL</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 3: PROJECTS ================= -->
+      <section id="section-projects" class="tab-content hidden animate-fade-in space-y-6">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+                <i data-lucide="folder-git-2" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Featured Projects</h3>
+                <p class="text-xs text-slate-500">Interactive showcases & deep-dive technical breakdowns</p>
+              </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-2" id="projectFilters">
+              <button onclick="filterProjects('all')" class="project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition-all" data-filter="all">All</button>
+              <button onclick="filterProjects('ai')" class="project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="ai">AI / GenAI</button>
+              <button onclick="filterProjects('cv')" class="project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="cv">Computer Vision</button>
+              <button onclick="filterProjects('fullstack')" class="project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-filter="fullstack">Full Stack</button>
+            </div>
+          </div>
+
+          <!-- Projects Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid">
+            <!-- Dynamic via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 4: SKILLS ================= -->
+      <section id="section-skills" class="tab-content hidden animate-fade-in space-y-6">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+              <i data-lucide="code-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Skills & Technologies</h3>
+              <p class="text-xs text-slate-500">Technical stack categorized with proficiency indicators</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="skillsContainer">
+            <!-- Dynamic via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 5: EDUCATION & ACHIEVEMENTS ================= -->
+      <section id="section-education" class="tab-content hidden animate-fade-in space-y-6">
+        <!-- Education Card -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+              <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Education</h3>
+              <p class="text-xs text-slate-500">Academic background and standing</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-slate-50 via-brand-50/30 to-slate-50 border border-slate-200/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-brand-100 text-brand-700 mb-2">2022 – 2026</span>
+              <h4 class="font-serif font-bold text-lg text-slate-900">B.Tech in Computer Science Engineering</h4>
+              <p class="text-sm font-medium text-slate-700 mt-0.5">Dr. Lankapalli Bullayya College of Engineering</p>
+              <p class="text-xs text-slate-500 mt-0.5">Affiliated with Andhra University, Visakhapatnam</p>
+            </div>
+            <div class="sm:text-right shrink-0 bg-white px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
+              <span class="text-xs text-slate-500 block font-medium">Cumulative Score</span>
+              <span class="text-2xl font-serif font-bold text-brand-600">8.33</span>
+              <span class="text-xs text-slate-400"> / 10 CGPA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements & Hackathons -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
+              <i data-lucide="trophy" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Achievements & Competitions</h3>
+              <p class="text-xs text-slate-500">Hackathons, buildathons, and algorithmic rankings</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-brand-200 transition-all flex items-start gap-3">
+              <div class="p-2 bg-purple-100 text-purple-700 rounded-lg shrink-0 mt-1">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-purple-700 tracking-wider uppercase bg-purple-50 px-2 py-0.5 rounded border border-purple-200">2026 Qualified</span>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mt-1">OpenAI Academy x NxtWave Buildathon</h4>
+                <p class="text-xs text-slate-600 mt-1">State-level generative AI competition; designed and presented agentic RAG solution workflows.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-brand-200 transition-all flex items-start gap-3">
+              <div class="p-2 bg-amber-100 text-amber-700 rounded-lg shrink-0 mt-1">
+                <i data-lucide="award" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-amber-700 tracking-wider uppercase bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Rank 59</span>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mt-1">NxtWave CodeVerse Contest</h4>
+                <p class="text-xs text-slate-600 mt-1">Secured top 60 position nationwide in competitive programming and speed problem-solving.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-brand-200 transition-all flex items-start gap-3">
+              <div class="p-2 bg-blue-100 text-blue-700 rounded-lg shrink-0 mt-1">
+                <i data-lucide="code" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-blue-700 tracking-wider uppercase bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Team Member</span>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mt-1">Smart India Hackathon 2025</h4>
+                <p class="text-xs text-slate-600 mt-1">Collaborated on real-world government/industry problem statement prototypes.</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-brand-200 transition-all flex items-start gap-3">
+              <div class="p-2 bg-indigo-100 text-indigo-700 rounded-lg shrink-0 mt-1">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-indigo-700 tracking-wider uppercase bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Team Member</span>
+                <h4 class="font-serif font-bold text-slate-900 text-sm mt-1">NASA Space Apps Hackathon 2025</h4>
+                <p class="text-xs text-slate-600 mt-1">Engineered space telemetry visualization and dataset analysis prototypes.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 6: CONTACT ================= -->
+      <section id="section-contact" class="tab-content hidden animate-fade-in space-y-6">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-card">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="p-2.5 bg-brand-50 text-brand-600 rounded-xl">
+              <i data-lucide="mail" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900">Get In Touch</h3>
+              <p class="text-xs text-slate-500">Send a direct message or connect via professional platforms</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <!-- Contact Info -->
+            <div class="lg:col-span-2 space-y-4">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Whether you have an opportunity, an AI architecture challenge, or just want to discuss full-stack & RAG engineering, feel free to send a message!
+              </p>
+
+              <div class="space-y-3 pt-2">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 bg-white rounded-lg text-brand-600 shadow-sm">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] text-slate-400 font-medium">Location</p>
+                    <p class="text-xs font-semibold text-slate-800">Visakhapatnam, AP, India</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 bg-white rounded-lg text-brand-600 shadow-sm">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] text-slate-400 font-medium">Email Address</p>
+                    <p class="text-xs font-semibold text-slate-800">lavanyajalli.dev@gmail.com</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                  <div class="p-2 bg-white rounded-lg text-brand-600 shadow-sm">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] text-slate-400 font-medium">LinkedIn</p>
+                    <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="text-xs font-semibold text-brand-600 hover:underline">
+                      linkedin.com/in/lavanyajalli
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="lg:col-span-3 bg-slate-50/80 p-6 rounded-2xl border border-slate-200/80">
+              <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                  <input type="text" id="formName" required placeholder="John Doe" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Your Email</label>
+                  <input type="email" id="formEmail" required placeholder="john@example.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Subject</label>
+                  <input type="text" id="formSubject" required placeholder="Project Inquiry / Job Opportunity" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Message</label>
+                  <textarea id="formMessage" required rows="4" placeholder="Hello Lavanya, I'd like to discuss..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white resize-none"></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                  <i data-lucide="send" class="w-4 h-4"></i> Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ================= PROJECT DETAIL MODAL ================= -->
+  <div id="projectModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-slate-200 shadow-2xl p-6 sm:p-8 relative animate-fade-in">
+      <button onclick="closeProjectModal()" class="absolute top-5 right-5 p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="modalContent">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RAG SIMULATOR MODAL ================= -->
+  <div id="ragSimModal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full border border-slate-200 shadow-2xl p-6 relative animate-fade-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-5 h-5 text-amber-500"></i>
+          <h3 class="font-serif font-bold text-slate-900">LangGraph RAG Workflow Simulator</h3>
+        </div>
+        <button onclick="closeRAGSimModal()" class="p-1 rounded-md text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <p class="text-xs text-slate-500">Test how Lavanya's custom Pinecone + LangGraph agentic query engine works step-by-step:</p>
+        
+        <div class="flex gap-2">
+          <input type="text" id="ragQuery" value="How does the technical interview platform parse resumes?" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-brand-500">
+          <button onclick="runRAGSimulation()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shrink-0">Execute</button>
+        </div>
+
+        <!-- Flow Visualizer Steps -->
+        <div class="space-y-2 pt-2" id="ragSteps">
+          <div id="step-1" class="p-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">1</span>
+            <span>Input Embeddings & Query Vectorization</span>
+          </div>
+          <div id="step-2" class="p-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">2</span>
+            <span>Pinecone Vector Index Retrieval (Similarity Top-K)</span>
+          </div>
+          <div id="step-3" class="p-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">3</span>
+            <span>LangGraph Agent State Router & Dynamic Prompting</span>
+          </div>
+          <div id="step-4" class="p-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[10px] font-bold">4</span>
+            <span>Gemini API Context Synthesis & Response</span>
+          </div>
+        </div>
+
+        <div id="ragOutput" class="hidden p-3 rounded-xl bg-slate-900 text-emerald-400 font-mono text-[11px] leading-relaxed overflow-x-auto">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // DATA DEFINITIONS
+    const NAV_ITEMS = [
+      { id: 'summary', label: 'Profile Summary', icon: 'user' },
+      { id: 'experience', label: 'Work Experience', icon: 'briefcase' },
+      { id: 'projects', label: 'Projects & Work', icon: 'folder-git-2' },
+      { id: 'skills', label: 'Skills & Tech', icon: 'code-2' },
+      { id: 'education', label: 'Education & Honors', icon: 'graduation-cap' },
+      { id: 'contact', label: 'Contact', icon: 'mail' },
+    ];
+
+    const PROJECTS = [
+      {
+        id: 'proj-1',
+        title: 'AI-Powered Technical Interview Platform',
+        category: 'ai',
+        badge: 'Featured Project',
+        shortDesc: 'Single-page AI interview prototype with dynamic question generation and real-time resume parsing.',
+        fullDesc: 'A comprehensive technical interview platform designed to evaluate candidate skills adaptively. Built with FastAPI and React, it parses resumes using custom Gemini API prompts, extracts key skill entities, and feeds them into a LangGraph state machine. The machine dynamically generates follow-up technical questions based on candidate performance.',
+        tech: ['FastAPI', 'React', 'PostgreSQL', 'LangGraph', 'Gemini API', 'Tailwind CSS'],
+        metrics: 'Automated 100% of initial technical screening workflows.',
+        github: 'https://github.com',
+        live: '#'
+      },
+      {
+        id: 'proj-2',
+        title: 'Real-Time Multi-Camera Attendance Engine',
+        category: 'cv',
+        badge: 'High Throughput',
+        shortDesc: 'Facial detection & recognition platform managing live streams across multiple cameras with zero frame lag.',
+        fullDesc: 'Engineered during the DragonFlyTest internship, this system processes simultaneous video feeds to log student/employee attendance in real time. Features model optimization through ONNX Runtime, lightweight face embedding storage, and direct backend syncing with MySQL.',
+        tech: ['Python', 'OpenCV', 'ONNX Runtime', 'FastAPI', 'React.js', 'MySQL'],
+        metrics: '< 15ms inference latency per face vector frame.',
+        github: 'https://github.com',
+        live: '#'
+      },
+      {
+        id: 'proj-3',
+        title: 'RAG Architecture & Agentic Workflow Engine',
+        category: 'ai',
+        badge: 'GenAI Core',
+        shortDesc: 'Multi-agent system utilizing Pinecone vector database, LangGraph orchestration, and custom LLM tool integrations.',
+        fullDesc: 'A stateful multi-agent architecture capable of autonomous reasoning over unstructured corporate documents. Employs chunking and embedding algorithms, Pinecone vector indexing, dynamic state routing in LangGraph, and automated synthesis.',
+        tech: ['Pinecone Vector DB', 'LangGraph', 'Python', 'FastAPI', 'Gemini API', 'RAG'],
+        metrics: 'Improved context retrieval accuracy by 42% over baseline RAG.',
+        github: 'https://github.com',
+        live: '#'
+      }
+    ];
+
+    const SKILL_CATEGORIES = [
+      {
+        title: 'AI, ML & RAG Architecture',
+        icon: 'sparkles',
+        skills: [
+          { name: 'Generative AI & LLMs', level: 90 },
+          { name: 'LangGraph & Agentic Flows', level: 88 },
+          { name: 'Pinecone Vector DB', level: 85 },
+          { name: 'OpenCV & Computer Vision', level: 82 },
+          { name: 'ONNX Runtime Optimization', level: 80 },
+          { name: 'Gemini API / RAG Pipelines', level: 92 },
+        ]
+      },
+      {
+        title: 'Backend & System APIs',
+        icon: 'server',
+        skills: [
+          { name: 'Python', level: 92 },
+          { name: 'FastAPI', level: 90 },
+          { name: 'Node.js & Express.js', level: 82 },
+          { name: 'RESTful API Design', level: 88 },
+          { name: 'PostgreSQL & MySQL', level: 85 },
+        ]
+      },
+      {
+        title: 'Frontend & UI Engineering',
+        icon: 'layout',
+        skills: [
+          { name: 'React.js', level: 90 },
+          { name: 'JavaScript (ES6+)', level: 88 },
+          { name: 'Tailwind CSS', level: 92 },
+          { name: 'HTML5 & CSS3', level: 95 },
+          { name: 'Light Theme & Responsive UI', level: 90 },
+        ]
+      },
+      {
+        title: 'Databases & Developer Tools',
+        icon: 'database',
+        skills: [
+          { name: 'Git / GitHub Version Control', level: 90 },
+          { name: 'SQL Query Optimization', level: 85 },
+          { name: 'Postman & API Testing', level: 88 },
+          { name: 'Linux Command Line', level: 80 },
+        ]
+      }
+    ];
+
+    // STATE
+    let activeTab = 'summary';
+
+    // DOM LOAD INITIALIZATION
+    window.onload = function() {
+      renderNavLinks();
+      renderProjects('all');
+      renderSkills();
+      lucide.createIcons();
+
+      // Mobile Menu Toggle Listeners
+      document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileNav);
+      document.getElementById('closeMobileNav').addEventListener('click', toggleMobileNav);
+    };
+
+    // RENDER NAVIGATION LINKS
+    function renderNavLinks() {
+      const desktopNav = document.getElementById('desktopNavLinks');
+      const mobileNav = document.getElementById('mobileNavLinks');
+      
+      const generateHTML = (isMobile = false) => NAV_ITEMS.map(item => {
+        const isActive = activeTab === item.id;
+        const activeClass = isActive 
+          ? 'bg-brand-50 text-brand-600 font-semibold border-r-4 border-brand-600 shadow-sm' 
+          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium';
+        
+        return `
+          <button 
+            onclick="setActiveTab('${item.id}'); ${isMobile ? 'toggleMobileNav();' : ''}"
+            class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm transition-all ${activeClass}"
+          >
+            <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0"></i>
+            <span>${item.label}</span>
+          </button>
+        `;
+      }).join('');
+
+      desktopNav.innerHTML = generateHTML(false);
+      mobileNav.innerHTML = generateHTML(true);
+      lucide.createIcons();
+    }
+
+    // TAB SWITCHING LOGIC
+    function setActiveTab(tabId) {
+      activeTab = tabId;
+      renderNavLinks();
+
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+      });
+
+      // Show selected tab
+      const targetSection = document.getElementById(`section-${tabId}`);
+      if (targetSection) {
+        targetSection.classList.remove('hidden');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // TOGGLE MOBILE NAV
+    function toggleMobileNav() {
+      const modal = document.getElementById('mobileNavModal');
+      modal.classList.toggle('hidden');
+    }
+
+    // RENDER PROJECTS
+    function renderProjects(filter = 'all') {
+      const grid = document.getElementById('projectsGrid');
+      const filtered = filter === 'all' 
+        ? PROJECTS 
+        : PROJECTS.filter(p => p.category === filter);
+
+      grid.innerHTML = filtered.map(proj => `
+        <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 hover:bg-white hover:border-brand-300 hover:shadow-card transition-all flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-100 text-brand-700">
+                ${proj.badge}
+              </span>
+              <span class="text-xs text-slate-400 capitalize">${proj.category === 'cv' ? 'Vision' : proj.category}</span>
+            </div>
+
+            <h4 class="font-serif font-bold text-base text-slate-900 group-hover:text-brand-600 transition-colors">
+              ${proj.title}
+            </h4>
+
+            <p class="text-xs text-slate-600 mt-2 line-clamp-3 leading-relaxed">
+              ${proj.shortDesc}
+            </p>
+
+            <div class="flex flex-wrap gap-1 mt-4">
+              ${proj.tech.slice(0, 4).map(t => `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-white border border-slate-200 text-slate-600">${t}</span>`).join('')}
+              ${proj.tech.length > 4 ? `<span class="text-[10px] text-slate-400 font-medium self-center">+${proj.tech.length - 4} more</span>` : ''}
+            </div>
+          </div>
+
+          <div class="pt-5 mt-5 border-t border-slate-200/60 flex items-center justify-between">
+            <button onclick="openProjectModal('${proj.id}')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1">
+              Deep Dive <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+            <div class="flex items-center gap-2">
+              <a href="${proj.github}" target="_blank" rel="noreferrer" class="p-1.5 text-slate-400 hover:text-slate-700">
+                <i data-lucide="github" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // FILTER PROJECTS BUTTONS
+    function filterProjects(category) {
+      document.querySelectorAll('.project-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.className = 'project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition-all';
+        } else {
+          btn.className = 'project-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all';
+        }
+      });
+      renderProjects(category);
+    }
+
+    // PROJECT DEEP DIVE MODAL
+    function openProjectModal(projId) {
+      const proj = PROJECTS.find(p => p.id === projId);
+      if (!proj) return;
+
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = `
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-brand-100 text-brand-700 uppercase tracking-wider">${proj.badge}</span>
+        </div>
+        <h3 class="font-serif font-bold text-xl sm:text-2xl text-slate-900">${proj.title}</h3>
+        
+        <div class="mt-4 p-3 rounded-xl bg-brand-50 border border-brand-100 flex items-center gap-2 text-xs text-brand-800 font-medium">
+          <i data-lucide="trending-up" class="w-4 h-4 text-brand-600 shrink-0"></i>
+          <span><strong>Impact Metric:</strong> ${proj.metrics}</span>
+        </div>
+
+        <div class="mt-4 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Technical Overview</h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${proj.fullDesc}</p>
+        </div>
+
+        <div class="mt-6">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Technologies Used</h4>
+          <div class="flex flex-wrap gap-1.5">
+            ${proj.tech.map(t => `<span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 border border-slate-200 text-slate-700">${t}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button onclick="closeProjectModal()" class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50">Close</button>
+          <a href="${proj.github}" target="_blank" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white flex items-center gap-2 hover:bg-slate-800">
+            <i data-lucide="github" class="w-4 h-4"></i> View Repository
+          </a>
+        </div>
+      `;
+
+      document.getElementById('projectModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.add('hidden');
+    }
+
+    // RENDER SKILLS
+    function renderSkills() {
+      const container = document.getElementById('skillsContainer');
+      container.innerHTML = SKILL_CATEGORIES.map(cat => `
+        <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80">
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="p-2 bg-white rounded-lg text-brand-600 shadow-sm border border-slate-100">
+              <i data-lucide="${cat.icon}" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-serif font-bold text-base text-slate-900">${cat.title}</h4>
+          </div>
+
+          <div class="space-y-3">
+            ${cat.skills.map(s => `
+              <div>
+                <div class="flex justify-between items-center text-xs mb-1">
+                  <span class="font-semibold text-slate-700">${s.name}</span>
+                  <span class="text-slate-400 text-[11px] font-medium">${s.level}%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-indigo-600 rounded-full transition-all duration-1000" style="width: ${s.level}%"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // CONTACT FORM SUBMISSION
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Sending...`;
+      lucide.createIcons();
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        lucide.createIcons();
+        document.getElementById('contactForm').reset();
+        
+        // Trigger Confetti
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.8 }
+        });
+
+        showToast('Message sent successfully! Lavanya will get back to you shortly.');
+      }, 1200);
+    }
+
+    // TOAST NOTIFICATIONS
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'px-4 py-3 bg-slate-900 text-white rounded-xl shadow-xl text-xs font-medium flex items-center gap-2 animate-fade-in border border-slate-700';
+      toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> ${message}`;
+      
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    // RESUME DOWNLOAD SIMULATION
+    function downloadResume() {
+      showToast('Downloading Lavanya Jalli - Resume (PDF)...');
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.setAttribute('download', 'Lavanya_Jalli_Resume.pdf');
+        document.body.appendChild(link);
+      }, 500);
+    }
+
+    // RAG SIMULATOR MODAL LOGIC
+    function openRAGSimModal() {
+      document.getElementById('ragSimModal').classList.remove('hidden');
+    }
+    
+    function closeRAGSimModal() {
+      document.getElementById('ragSimModal').classList.add('hidden');
+    }
+
+    function runRAGSimulation() {
+      const query = document.getElementById('ragQuery').value;
+      const steps = [
+        document.getElementById('step-1'),
+        document.getElementById('step-2'),
+        document.getElementById('step-3'),
+        document.getElementById('step-4'),
+      ];
+      const output = document.getElementById('ragOutput');
+      output.classList.add('hidden');
+
+      // Reset step styles
+      steps.forEach(s => {
+        s.className = "p-3 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-400 flex items-center gap-2";
+      });
+
+      // Animate through steps
+      let delay = 0;
+      steps.forEach((step, idx) => {
+        setTimeout(() => {
+          step.className = "p-3 rounded-lg border border-brand-300 bg-brand-50/60 text-xs text-brand-700 font-semibold flex items-center gap-2 animate-fade-in";
+        }, delay);
+        delay += 600;
+      });
+
+      // Final Output
+      setTimeout(() => {
+        output.classList.remove('hidden');
+        output.innerHTML = `> Query Vectorized: [0.024, -0.198, 0.884, ...]\n> Pinecone Top-K Match Score: 0.942\n> LangGraph Node: ResumeParserTool\n> Answer: "The system parses uploaded PDFs using Gemini API vision-text embeddings to extract skills and maps them into dynamic interview nodes."`;
+        
+        confetti({
+          particleCount: 30,
+          spread: 40,
+          origin: { y: 0.6 }
+        });
+      }, delay + 200);
+    }
+  </script>
+</body>
+</html>
